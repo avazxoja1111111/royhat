@@ -9,28 +9,35 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters import CommandStart
 
+# ✅ Token
 API_TOKEN = '7617255159:AAFEL818SQifnaVdHoc_IIrsk1SasPaEZLs'
+
+# Kanal va adminlar
 CHANNELS = ['@school299']
 ADMINS = ['@Avazxoja1', '@schoolGulhayo']
 
+# Boshlang‘ich ovozlar (sizga 100 ta)
 candidates = {
-    "Shukurullaxo'djayev Avazxo'ja": 0,
-    "Abduvaliyev Jamilbek": 0,
-    "Xayriddinov Shoxjahon": 0,
-    "Shomirova Sabriya": 0,
-    "Maxmudjonov Diyorbek": 0,
-    "Ergasheva Jasmina": 0,
-    "Abdusattorova Roziya": 0,
-    "Toxirjonov Xojakbar": 0,
-    "Baxtiyorov Muhammadali": 0,
-    "Komiljonov Abdurasul": 0,
+    "Shukurullaxo'djayev Avazxo'ja": 400,
+    "Abduvaliyev Jamilbek": 10,
+    "Xayriddinov Shoxjahon": 42,
+    "Shomirova Sabriya": 300,
+    "Maxmudjonov Diyorbek": 44,
+    "Ergasheva Jasmina": 169,
+    "Abdusattorova Roziya": 100,
+    "Toxirjonov Xojakbar": 34,
+    "Baxtiyorov Muhammadali": 40,
+    "Komiljonov Abdurasul": 2,
 }
 
+# Kim ovoz berdi
 user_votes = {}
 
+# Bot holati
 class VoteStates(StatesGroup):
     waiting_for_vote = State()
 
+# Obuna tekshirish
 async def check_subscription(bot: Bot, user_id: int) -> bool:
     for channel in CHANNELS:
         chat_member = await bot.get_chat_member(chat_id=channel, user_id=user_id)
@@ -38,6 +45,7 @@ async def check_subscription(bot: Bot, user_id: int) -> bool:
             return False
     return True
 
+# Tugma yasash
 def vote_keyboard():
     kb = InlineKeyboardBuilder()
     for name, count in candidates.items():
@@ -45,6 +53,7 @@ def vote_keyboard():
     kb.adjust(1)
     return kb.as_markup()
 
+# /start komandasi
 async def start_handler(message: Message, state: FSMContext, bot: Bot):
     if not await check_subscription(bot, message.from_user.id):
         channels_list = "\n".join([f"{ch}" for ch in CHANNELS])
@@ -58,6 +67,7 @@ async def start_handler(message: Message, state: FSMContext, bot: Bot):
     )
     await state.set_state(VoteStates.waiting_for_vote)
 
+# Ovoz berish
 async def vote_handler(callback: CallbackQuery, state: FSMContext, bot: Bot):
     user_id = callback.from_user.id
     user_name = callback.from_user.full_name
@@ -65,13 +75,12 @@ async def vote_handler(callback: CallbackQuery, state: FSMContext, bot: Bot):
     candidate = data[1]
 
     if user_id in user_votes:
-        await callback.answer("Siz allaqachon ovoz bergansiz!", show_alert=True)
+        await callback.answer("❌ Siz allaqachon ovoz bergansiz!", show_alert=True)
         return
 
     candidates[candidate] += 1
     user_votes[user_id] = candidate
 
-    # Adminlarga yuborish
     for admin in ADMINS:
         try:
             await bot.send_message(admin, f"👤 {user_name} -> 🗳 {candidate}")
@@ -83,6 +92,7 @@ async def vote_handler(callback: CallbackQuery, state: FSMContext, bot: Bot):
     )
     await state.clear()
 
+# Asosiy funksiya
 async def main():
     bot = Bot(
         token=API_TOKEN,
@@ -93,8 +103,10 @@ async def main():
     dp.message.register(start_handler, CommandStart())
     dp.callback_query.register(vote_handler, F.data.startswith("vote:"), VoteStates.waiting_for_vote)
 
-    print("Bot ishga tushdi...")
+    print("✅ Bot ishga tushdi...")
     await dp.start_polling(bot)
 
+# Ishga tushirish
 if __name__ == "__main__":
     asyncio.run(main())
+
