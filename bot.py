@@ -18,13 +18,13 @@ ADMINS = ['@Avazxoja1', '@schoolGulhayo']
 
 # Boshlang‘ich ovozlar (sizga 100 ta)
 candidates = {
-    "Shukurullaxo'djayev Avazxo'ja": 488,
+    "Shukurullaxo'djayev Avazxo'ja": 550,
     "Abduvaliyev Jamilbek": 15,
-    "Xayriddinov Shoxjahon": 43,
-    "Shomirova Sabriya": 377,
+    "Xayriddinov Shoxjahon": 44,
+    "Shomirova Sabriya": 508,
     "Maxmudjonov Diyorbek": 46,
-    "Ergasheva Jasmina": 408,
-    "Abdusattorova Roziya": 101,
+    "Ergasheva Jasmina": 541,
+    "Abdusattorova Roziya": 102,
     "Toxirjonov Xojakbar": 36,
     "Baxtiyorov Muhammadali": 41,
     "Komiljonov Abdurasul": 2,
